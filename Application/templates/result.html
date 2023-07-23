@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../static/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 </head>
 <body>
 
@@ -27,19 +28,40 @@
     </div>
 
     <div class="split right">
-        <h2>Choose a Threshold temperature</h2>
-        <p id="split-p">On clicking Submit, a Smart Contract will be triggered displaying all the dates and the time at which the
-            temperature exceeded the threshold.
-        </p>
-        <input type="number" name="threshold" id="threshold" placeholder="Enter an integer value: ">
-        <button type="submit" id="submit">Submit</button>
+        <!-- Connect to account -->
+        <div id="connect-account">
+            <h2>Connect your MetaMask account</h2>
+            <p id="split-p">Kindly ensure you have a MetaMask account. After that, click the button to connect</p>
+            <button type="submit" id="connect">Connect</button>
+            <p id="account" style="text-align:left"></p>
+        </div>
+        <!-- Deploy smart contract -->
+        <div id="deploy-smart-contract" style="display: none;">
+            <h2>Deploy the Smart Contract</h2>
+            <p id="split-p">On clicking Submit, a Smart Contract will be deployed on the Polygon network. 
+                A gas fee will be charged for the same.
+            </p>
+            <button type="submit" id="deploy">Deploy</button>
+            <a href="" id="contract-url"><p id="contract-address" style="text-align:left"></p></a>
+        </div>
+        <!-- Choose Threshold -->
+        <div id="enter-threshold" style="display: none;">
+            <h2>Choose a Threshold temperature</h2>
+            <p id="split-p">On clicking Submit, a Smart Contract will be triggered displaying all the dates and the time at which the
+                temperature exceeded the threshold.
+            </p>
+            <input type="number" name="threshold" id="threshold" placeholder="Enter an integer value: ">
+            <button type="submit" id="submit">Submit</button>
+        </div>
     </div>
 
     <script>
-        var dates = JSON.parse('{{ date_data | tojson }}');
-        var times = JSON.parse('{{ time_data | tojson }}');
-        var temperatures = JSON.parse('{{ temperature_data | tojson }}');
+        const dates = JSON.parse('{{ date_data | tojson }}');
+        const times = JSON.parse('{{ time_data | tojson }}');
+        const temperatures = JSON.parse('{{ temperature_data | tojson }}');
     </script>
     <script src="../static/script.js"></script>
+    <script src="../static/credentials.js"></script>
+    <script src="../static/smart_contracts_logic.js"></script>
 </body>
 </html>
