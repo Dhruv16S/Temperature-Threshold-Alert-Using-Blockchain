@@ -63,3 +63,15 @@ a:hover {
 a:active {
     text-decoration: underline;
 }
+
+table {
+    border-collapse: collapse;
+}
+  
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+  
+tr:hover {background-color: rgb(255, 172, 172);}
