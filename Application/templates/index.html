@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digiotai Solutions Private Limited</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <h1>Temperature Threshold Alert Using Blockchain</h1>
+    <p>The following application accepts a datataset with temperature as an attribute. Based on the threshold set, a smart contract 
+        is triggered to send an alert to the user. The smart contract is deployed on the Polygon network. Kindly ensure you have a MetaMask account.
+    </p>
+
+    
+    <form action="/process_csv" method="post" enctype="multipart/form-data">
+        <div id="choose-data">
+            <div>
+                <h4>Upload your dataset (Format .csv)</h4>
+                <label class="custom-file-upload">
+                    <input type="file" name="csv_file" accept=".csv"/>
+                    Choose a dataset
+                </label>
+            </div>
+            <div>
+                <h4>Choose the duration: </h4>
+                <input type="date" id="duration" name="duration">
+            </div>
+            <br>
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+    {% if plot_base64 %}
+        <img src="data:image/png;base64,{{ plot_base64 }}" alt="Temperature Plot">
+    {% endif %}
+</body>
+</html>

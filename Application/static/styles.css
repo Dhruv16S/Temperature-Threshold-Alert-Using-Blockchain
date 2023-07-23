@@ -1,0 +1,21 @@
+*{
+    font-family: 'Open Sans', sans-serif;
+}
+
+p{
+    width: 45%;
+    text-align: justify;
+}
+
+input[type="file"] {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
