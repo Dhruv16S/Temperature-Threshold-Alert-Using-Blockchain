@@ -36,5 +36,11 @@
     {% if plot_base64 %}
         <img src="data:image/png;base64,{{ plot_base64 }}" alt="Temperature Plot">
     {% endif %}
+    <script>
+        var dates = '{{ data.Dates }}';
+        var times = '{{ data.Times }}';
+        var temperatures = '{{ data.Temperatures }}';
+    </script>
+    <script src="../static/script.js"></script>
 </body>
 </html>

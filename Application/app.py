@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', data=None, plot_base64=None)
 
 @app.route('/process_csv', methods=['POST'])
 def process_csv():
@@ -62,12 +62,9 @@ def process_csv():
         time_data = [str(i) for i in time_data]
         temperature_data = [float(i) for i in temperature_data]
         
-        # Convert the lists to JSON strings
-        date_data_json = json.dumps(date_data)
-        time_data_json = json.dumps(time_data)
-        temperature_data_json = json.dumps(temperature_data)
-
-        return render_template('index.html', date_data_json=date_data_json, time_data_json=time_data_json, temperature_data_json=temperature_data_json, plot_base64=plot_base64)
+        data_dict = {"Dates": date_data, "Times": time_data, "Temperatures": temperature_data}
+                
+        return render_template('index.html', data = data_dict, plot_base64=plot_base64)
 
     else:
         return "Invalid file format. Please upload a .csv file."
