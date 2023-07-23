@@ -10,27 +10,29 @@
     <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
-    <h1>Temperature Threshold Alert Using Blockchain</h1>
-    <p>The following application accepts a datataset with temperature as an attribute. Based on the threshold set, a smart contract 
-        is triggered to send an alert to the user. The smart contract is deployed on the Polygon network. Kindly ensure you have a MetaMask account.
-    </p>
+    <div class="split left">
+        <h2>Temperature Threshold Alert Using Blockchain</h2>
+        <p>The following application accepts a datataset with temperature as an attribute. Based on the threshold set, a smart contract 
+            is triggered to send an alert to the user. The smart contract is deployed on the Polygon network. Kindly ensure you have a MetaMask account.
+        </p>
 
-    <form action="/process_csv" method="post" enctype="multipart/form-data">
-        <div id="choose-data">
-            <div>
-                <h4>Upload your dataset (Format .csv)</h4>
-                <label class="custom-file-upload">
-                    <input type="file" name="csv_file" accept=".csv"/>
-                    Choose a dataset
-                </label>
+        <form action="/result" method="post" enctype="multipart/form-data">
+            <div id="choose-data">
+                <div>
+                    <h4>Upload your dataset (Format .csv)</h4>
+                    <label class="custom-file-upload">
+                        <input type="file" name="csv_file" accept=".csv" required/>
+                        Choose a dataset
+                    </label>
+                </div>
+                <div>
+                    <h4>Choose the duration: </h4>
+                    <input type="date" id="duration" name="duration" required>
+                </div>
+                <br>
+                <input type="submit" value="Submit">
             </div>
-            <div>
-                <h4>Choose the duration: </h4>
-                <input type="date" id="duration" name="duration">
-            </div>
-            <br>
-            <input type="submit" value="Submit">
-        </div>
-    </form>
+        </form>
+    </div>
 </body>
 </html>

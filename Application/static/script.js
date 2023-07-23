@@ -1,3 +1,5 @@
-for (let index = 0; index < dates.length; index++) {
-  console.log(dates[index]);
-}
+document.getElementById("submit").addEventListener("click", () => {
+  const threshold = Number(document.getElementById("threshold").value); 
+
+});
+

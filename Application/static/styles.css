@@ -7,6 +7,11 @@ p{
     text-align: justify;
 }
 
+#split-p{
+    width: 75%;
+    text-align: justify;
+}
+
 input[type="file"] {
     font-family: 'Open Sans', sans-serif;
 }
@@ -19,3 +24,26 @@ input[type="file"] {
     border-radius: 5px;
 }
 
+img{
+    width: 70%;
+    align-items: center;
+}
+
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+  }
+  
+  .left {
+    left: 0;
+    padding: 25px;
+  }
+  
+  .right {
+    right: 0;
+    padding:25px;
+  }

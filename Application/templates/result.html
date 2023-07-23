@@ -10,23 +10,35 @@
     <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
-    <h1>Temperature Threshold Alert Using Blockchain</h1>
-    <p>The following application accepts a datataset with temperature as an attribute. Based on the threshold set, a smart contract 
-        is triggered to send an alert to the user. The smart contract is deployed on the Polygon network. Kindly ensure you have a MetaMask account.
-    </p>
 
-    {% if plot_line %}
-        <img src="data:image/png;base64,{{ plot_line }}" alt="Line Plot">
-    {% endif %}
+    <div class="split left">
+        <h2>Temperature Threshold Alert Using Blockchain</h2>
+        <p id="split-p">The following application accepts a datataset with temperature as an attribute. Based on the threshold set, a smart contract 
+            is triggered to send an alert to the user. The smart contract is deployed on the Polygon network. Kindly ensure you have a MetaMask account.
+        </p>
 
-    {% if plot_scatter %}
-        <img src="data:image/png;base64,{{ plot_scatter }}" alt="Scatter Plot">
-    {% endif %}
+        {% if plot_line %}
+            <img src="data:image/png;base64,{{ plot_line }}" alt="Line Plot">
+        {% endif %}
+
+        {% if plot_scatter %}
+            <img src="data:image/png;base64,{{ plot_scatter }}" alt="Scatter Plot">
+        {% endif %}
+    </div>
+
+    <div class="split right">
+        <h2>Choose a Threshold temperature</h2>
+        <p id="split-p">On clicking Submit, a Smart Contract will be triggered displaying all the dates and the time at which the
+            temperature exceeded the threshold.
+        </p>
+        <input type="number" name="threshold" id="threshold" placeholder="Enter an integer value: ">
+        <button type="submit" id="submit">Submit</button>
+    </div>
 
     <script>
         var dates = JSON.parse('{{ date_data | tojson }}');
-        var times = '{{ time_data | tojson }}';
-        var temperatures = '{{ temperature_data | tojson }}';
+        var times = JSON.parse('{{ time_data | tojson }}');
+        var temperatures = JSON.parse('{{ temperature_data | tojson }}');
     </script>
     <script src="../static/script.js"></script>
 </body>

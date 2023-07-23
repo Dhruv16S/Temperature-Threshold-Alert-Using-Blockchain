@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import io
 import base64
-import json
 
 app = Flask(__name__)
 
@@ -12,7 +11,7 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/process_csv', methods=['POST'])
+@app.route('/result', methods=['POST'])
 def process_csv():
     # Check if the request contains a file
     if 'csv_file' not in request.files:
@@ -52,10 +51,6 @@ def process_csv():
         time_data = [str(i) for i in time_data]
         temperature_data = [float(i) for i in temperature_data]
 
-        # date_data = json.dumps(date_data)
-        # time_data= json.dumps(time_data)
-        # temperature_data = json.dumps(temperature_data)
-
         return render_template('result.html', date_data = date_data, time_data = time_data, temperature_data = temperature_data, plot_line=plot_line, plot_scatter = plot_scatter)
 
     else:
@@ -71,7 +66,6 @@ def plot_graphs(plot_data, month, year, line_graph = True):
     plt.ylabel("Temperature")
     plt.title(f"Temp vs Date at Balta Sound in {month}-{year}")
     
-    # Save the plot to a file (optional) or display it directly in the HTML
     buffer = io.BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
