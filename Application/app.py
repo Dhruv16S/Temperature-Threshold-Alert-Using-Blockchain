@@ -52,9 +52,11 @@ def process_csv():
         time_data = [str(i) for i in time_data]
         temperature_data = [float(i) for i in temperature_data]
 
-        data_dict = {"Dates": date_data, "Times": time_data, "Temperatures": temperature_data}
-                
-        return render_template('result.html', data = data_dict, plot_line=plot_line, plot_scatter = plot_scatter)
+        # date_data = json.dumps(date_data)
+        # time_data= json.dumps(time_data)
+        # temperature_data = json.dumps(temperature_data)
+
+        return render_template('result.html', date_data = date_data, time_data = time_data, temperature_data = temperature_data, plot_line=plot_line, plot_scatter = plot_scatter)
 
     else:
         return "Invalid file format. Please upload a .csv file."

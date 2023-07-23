@@ -24,9 +24,9 @@
     {% endif %}
 
     <script>
-        var dates = '{{ data.Dates }}';
-        var times = '{{ data.Times }}';
-        var temperatures = '{{ data.Temperatures }}';
+        var dates = JSON.parse('{{ date_data | tojson }}');
+        var times = '{{ time_data | tojson }}';
+        var temperatures = '{{ temperature_data | tojson }}';
     </script>
     <script src="../static/script.js"></script>
 </body>

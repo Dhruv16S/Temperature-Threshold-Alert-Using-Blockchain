@@ -1,6 +1,3 @@
-
-
-
-console.log(dates);
-console.log(times);
-console.log(temperatures);
+for (let index = 0; index < dates.length; index++) {
+  console.log(dates[index]);
+}
