@@ -15,22 +15,19 @@
         is triggered to send an alert to the user. The smart contract is deployed on the Polygon network. Kindly ensure you have a MetaMask account.
     </p>
 
-    <form action="/process_csv" method="post" enctype="multipart/form-data">
-        <div id="choose-data">
-            <div>
-                <h4>Upload your dataset (Format .csv)</h4>
-                <label class="custom-file-upload">
-                    <input type="file" name="csv_file" accept=".csv"/>
-                    Choose a dataset
-                </label>
-            </div>
-            <div>
-                <h4>Choose the duration: </h4>
-                <input type="date" id="duration" name="duration">
-            </div>
-            <br>
-            <input type="submit" value="Submit">
-        </div>
-    </form>
+    {% if plot_line %}
+        <img src="data:image/png;base64,{{ plot_line }}" alt="Line Plot">
+    {% endif %}
+
+    {% if plot_scatter %}
+        <img src="data:image/png;base64,{{ plot_scatter }}" alt="Scatter Plot">
+    {% endif %}
+
+    <script>
+        var dates = '{{ data.Dates }}';
+        var times = '{{ data.Times }}';
+        var temperatures = '{{ data.Temperatures }}';
+    </script>
+    <script src="../static/script.js"></script>
 </body>
 </html>

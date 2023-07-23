@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', data=None, plot_base64=None)
+    return render_template('index.html')
 
 @app.route('/process_csv', methods=['POST'])
 def process_csv():
@@ -45,29 +45,37 @@ def process_csv():
 
         plot_data = pd.DataFrame({'Date': temp_date_data, 'Temp': temperature_data})
 
-        plt.figure(figsize=(8, 4))
-        sns.lineplot(data = plot_data, x="Date", y="Temp")
-        plt.xlabel("Date")
-        plt.ylabel("Temperature")
-        plt.title(f"Temp vs Date at Balta Sound in {month}-{year}")
-    
-        # Save the plot to a file (optional) or display it directly in the HTML
-        buffer = io.BytesIO()
-        plt.savefig(buffer, format='png')
-        buffer.seek(0)
-        plot_base64 = base64.b64encode(buffer.getvalue()).decode()
-        plt.close()
+        plot_line = plot_graphs(plot_data, month, year, line_graph = True)
+        plot_scatter = plot_graphs(plot_data, month, year, line_graph = False)
 
         date_data = [str(i)[:10] for i in date_data]
         time_data = [str(i) for i in time_data]
         temperature_data = [float(i) for i in temperature_data]
-        
+
         data_dict = {"Dates": date_data, "Times": time_data, "Temperatures": temperature_data}
                 
-        return render_template('index.html', data = data_dict, plot_base64=plot_base64)
+        return render_template('result.html', data = data_dict, plot_line=plot_line, plot_scatter = plot_scatter)
 
     else:
         return "Invalid file format. Please upload a .csv file."
+    
+def plot_graphs(plot_data, month, year, line_graph = True):
+    plt.figure(figsize=(8, 4))
+    if line_graph:
+        sns.lineplot(data = plot_data, x="Date", y="Temp")
+    else:
+        sns.scatterplot(data = plot_data, x="Date", y="Temp")
+    plt.xlabel("Date")
+    plt.ylabel("Temperature")
+    plt.title(f"Temp vs Date at Balta Sound in {month}-{year}")
+    
+    # Save the plot to a file (optional) or display it directly in the HTML
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    plot = base64.b64encode(buffer.getvalue()).decode()
+    plt.close()
+    return plot
 
 if __name__ == '__main__':
     app.run(debug=True)
