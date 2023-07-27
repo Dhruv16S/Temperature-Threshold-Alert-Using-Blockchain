@@ -1,20 +1,9 @@
-// Interacting with Smart Contract
-// Essentially, submit the threshold temperature and the rounded temperatures to the smart contract
-// The smart contract will then check if the threshold is breached and returns the indices of the breached temperatures
+// Just send exceeded dates. 
 
-var breached_temperatures = null;
-
-const addData = async (threshold, rounded_temperatures) => {
+const addData = async (blockchain_content) => {
     if(contract){
-        var transaction = await contract.methods.addData(rounded_temperatures, threshold).send({
+        var transaction = await contract.methods.appendString(blockchain_content).send({
             from: account
         });
-    }
-};
-
-const getBreachedTemperatures = async () => {
-    if(contract){
-        breached_temperatures = await contract.methods.getTemperaturesAboveThreshold().call();
-        return breached_temperatures;
     }
 };
