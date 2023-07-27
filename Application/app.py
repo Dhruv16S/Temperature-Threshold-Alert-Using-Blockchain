@@ -51,7 +51,7 @@ def process_csv():
         time_data = [str(i) for i in time_data]
         temperature_data = [float(i) for i in temperature_data]
 
-        return render_template('result.html', date_data = date_data, time_data = time_data, temperature_data = temperature_data, plot_line=plot_line, plot_scatter = plot_scatter)
+        return render_template('result.html', date_data = date_data, time_data = time_data, temperature_data = temperature_data, month = month, year = year, plot_line=plot_line, plot_scatter = plot_scatter)
 
     else:
         return "Invalid file format. Please upload a .csv file."

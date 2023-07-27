@@ -50,7 +50,7 @@
             <p id="split-p">On clicking Submit, a Smart Contract will be triggered displaying all the dates and the time at which the
                 temperature exceeded the threshold.
             </p>
-            <input type="number" name="threshold" id="threshold" placeholder="Enter an integer value: ">
+            <input type="number" name="threshold" id="threshold" placeholder="Enter a value: ">
             <button type="submit" id="submit">Submit</button>
         </div>
         <!-- Breached Temperatures -->
@@ -62,6 +62,8 @@
         const dates = JSON.parse('{{ date_data | tojson }}');
         const times = JSON.parse('{{ time_data | tojson }}');
         const temperatures = JSON.parse('{{ temperature_data | tojson }}');
+        const month = JSON.parse('{{ month | tojson }}');
+        const year = JSON.parse('{{ year | tojson }}');
     </script>
     <script src="../static/script.js"></script>
     <script src="../static/credentials.js"></script>
