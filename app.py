@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', filter_found = None)
 
 @app.route('/result', methods=['POST'])
 def process_csv():
@@ -34,7 +34,10 @@ def process_csv():
         year = duration.split('-')[0]
         
         # Filter data based on the provided month and year
-        filtered_data = df[df["Date"] >= f"01-{month}-{year}"]
+        filtered_data = df[df["Date"].str.contains(f"{month}-{year}")]
+
+        if len(filtered_data) == 0:
+            return render_template('index.html', filter_found = "No records available in that duration. Please try again.")
 
         date_data = filtered_data['Date'].tolist()
         time_data = filtered_data['Time'].tolist()
@@ -57,7 +60,7 @@ def process_csv():
         return "Invalid file format. Please upload a .csv file."
     
 def plot_graphs(plot_data, month, year, line_graph = True):
-    plt.figure(figsize=(8, 4))
+    plt.figure(figsize=(10, 5))
     if line_graph:
         sns.lineplot(data = plot_data, x="Date", y="Temp")
     else:
