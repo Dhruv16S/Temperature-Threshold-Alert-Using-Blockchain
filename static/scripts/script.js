@@ -61,61 +61,111 @@ function displayBreachedTemperatures() {
 }
 
 const createTable = async(table_empty) => {
+
+  const loadingSpinner = document.getElementById('loading-spinner');
+  loadingSpinner.style.display = 'flex';
   
-  await addData(month_conversion[month], breachedDataDates, breachedDataTimes, breachedDataTemperatures, String(account));
+  try {
+    await addData(month_conversion[month], breachedDataDates, breachedDataTimes, breachedDataTemperatures, String(account));
+    const recordCount = await getRecordCount();
+    const recordOccurences = await getAllMonthlyOccurrences();
 
-  const tableContainer = document.getElementById('table-container');
-  
-  while (tableContainer.firstChild) {
-      tableContainer.removeChild(tableContainer.firstChild);
-  }
+    loadingSpinner.style.display = 'none';
 
-  if(table_empty){
-    const h2 = document.createElement('h2');
-    h2.textContent = 'No dates found';
-    tableContainer.appendChild(h2);
-  }
-  else{
-    const h2 = document.createElement('h2');
-    h2.textContent = 'Dates on which temperature exceeded the threshold';
-    tableContainer.appendChild(h2)
-
-    const link = document.createElement("a");
-    link.href = "https://mumbai.polygonscan.com/address/" + contract_address + "#readContract";
-    link.target = "_blank";
-    link.textContent = "Read Blockchain Contents here";
-    tableContainer.appendChild(link);
+    const tableContainer = document.getElementById('table-container');
     
+    while (tableContainer.firstChild) {
+        tableContainer.removeChild(tableContainer.firstChild);
+    }
 
-    const table = document.createElement('table');
-    const headerRow = document.createElement('tr');
-    const headers = ['Date', 'Time', 'Temperature'];
-    headers.forEach(headerText => {
-        const th = document.createElement('th');
-        th.textContent = headerText;
-        headerRow.appendChild(th);
-    });
-    table.appendChild(headerRow);
+    if(table_empty){
+      const h2 = document.createElement('h2');
+      h2.textContent = 'No dates found';
+      tableContainer.appendChild(h2);
+    }
 
-    for (const index in breachedData) {
-        const data = breachedData[index];
+    else{
+
+      const numberRecords = document.createElement('h2');
+      numberRecords.textContent = 'Total number of records in the blockchain network: ' + Number(recordCount);
+      tableContainer.appendChild(numberRecords)
+
+      // Read Blockchain
+      const link = document.createElement("a");
+      link.href = "https://mumbai.polygonscan.com/address/" + contract_address + "#readContract#F2";
+      link.target = "_blank";
+      link.textContent = "Read Blockchain Contents here";
+      tableContainer.appendChild(link);
+
+      // Monthly Occurences
+      const monthlyOccurences = document.createElement('h2');
+      monthlyOccurences.textContent = 'Monthly Occurences of temperature exceeding threshold';
+      tableContainer.appendChild(monthlyOccurences)
+
+      const monthlyTable = document.createElement('table');
+      const monthlyHeaderRow = document.createElement('tr');
+      const monthlyHeaders = ["Month", "Occurences"];
+      monthlyHeaders.forEach(headerText => {
+          const thTemp = document.createElement('th');
+          thTemp.textContent = headerText;
+          monthlyHeaderRow.appendChild(thTemp);
+      });
+      monthlyTable.appendChild(monthlyHeaderRow);
+
+
+      for (let i=0; i < recordOccurences.length; i++) {
         const row = document.createElement('tr');
 
-        const dateCell = document.createElement('td');
-        dateCell.textContent = data.date;
-        row.appendChild(dateCell);
+        const monthCell = document.createElement('td');
+        monthCell.textContent = recordOccurences[i][0];
+        row.appendChild(monthCell);
 
-        const timeCell = document.createElement('td');
-        timeCell.textContent = data.time;
-        row.appendChild(timeCell);
+        const occurencesCell = document.createElement('td');
+        occurencesCell.textContent = Number(recordOccurences[i][1]);
+        row.appendChild(occurencesCell);
 
-        const temperatureCell = document.createElement('td');
-        temperatureCell.textContent = data.temperature;
-        row.appendChild(temperatureCell);
+        monthlyTable.appendChild(row);
+      }
 
-        table.appendChild(row);
-    }
-    
-    tableContainer.appendChild(table);
+      tableContainer.appendChild(monthlyTable);
+
+      // Create Table of current breaches
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Dates on which temperature exceeded the threshold';
+      tableContainer.appendChild(h2)
+      
+      const table = document.createElement('table');
+      const headerRow = document.createElement('tr');
+      const headers = ['Date', 'Time', 'Temperature'];
+      headers.forEach(headerText => {
+          const th = document.createElement('th');
+          th.textContent = headerText;
+          headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      for (const index in breachedData) {
+          const data = breachedData[index];
+          const row = document.createElement('tr');
+
+          const dateCell = document.createElement('td');
+          dateCell.textContent = data.date;
+          row.appendChild(dateCell);
+
+          const timeCell = document.createElement('td');
+          timeCell.textContent = data.time;
+          row.appendChild(timeCell);
+
+          const temperatureCell = document.createElement('td');
+          temperatureCell.textContent = data.temperature;
+          row.appendChild(temperatureCell);
+
+          table.appendChild(row);
+      }
+      
+      tableContainer.appendChild(table);
+  }   
+  } catch (error) {
+      loadingSpinner.style.display = 'none';
   }
 };

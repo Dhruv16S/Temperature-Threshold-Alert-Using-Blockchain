@@ -9,6 +9,11 @@ contract ThresholdTemperatures {
         string temperature;
     }
 
+    struct MonthlyOccurrence {
+        string month;
+        uint256 occurrences;
+    }
+
     mapping(string => uint256) public monthlyReport;
 
     TemperatureDetail[] public tempDetails;
@@ -27,7 +32,6 @@ contract ThresholdTemperatures {
         monthlyReport["November"] = 0;
         monthlyReport["December"] = 0;
     }
-
 
     function getTemperatureDetailsCount() external view returns (uint256) {
         return tempDetails.length;
@@ -52,5 +56,26 @@ contract ThresholdTemperatures {
         }
 
         monthlyReport[month] += dates.length;
+    }
+
+    function getAllMonthlyOccurrences() external view returns (MonthlyOccurrence[] memory) {
+        MonthlyOccurrence[] memory occurrences = new MonthlyOccurrence[](12);
+        occurrences[0] = MonthlyOccurrence("January", monthlyReport["January"]);
+        occurrences[1] = MonthlyOccurrence("February", monthlyReport["February"]);
+        occurrences[2] = MonthlyOccurrence("March", monthlyReport["March"]);
+        occurrences[3] = MonthlyOccurrence("April", monthlyReport["April"]);
+        occurrences[4] = MonthlyOccurrence("May", monthlyReport["May"]);
+        occurrences[5] = MonthlyOccurrence("June", monthlyReport["June"]);
+        occurrences[6] = MonthlyOccurrence("July", monthlyReport["July"]);
+        occurrences[7] = MonthlyOccurrence("August", monthlyReport["August"]);
+        occurrences[8] = MonthlyOccurrence("September", monthlyReport["September"]);
+        occurrences[9] = MonthlyOccurrence("October", monthlyReport["October"]);
+        occurrences[10] = MonthlyOccurrence("November", monthlyReport["November"]);
+        occurrences[11] = MonthlyOccurrence("December", monthlyReport["December"]);
+        return occurrences;
+    }
+
+    function getTemperatureDetails() external view returns (TemperatureDetail[] memory) {
+        return tempDetails;
     }
 }
