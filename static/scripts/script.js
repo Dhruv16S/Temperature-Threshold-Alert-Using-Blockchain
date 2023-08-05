@@ -1,15 +1,36 @@
-var breachedData = [];
+var breachedDataDates = [];
+var breachedDataTimes = [];
+var breachedDataTemperatures = [];
 var breached_temperatures = [];
 var blockchain_content;
+
+month_conversion = {
+  "01" : "January",
+  "02" : "February",
+  "03" : "March",
+  "04" : "April",
+  "05" : "May",
+  "06" : "June",
+  "07" : "July",
+  "08" : "August",
+  "09" : "September",
+  "10" : "October",
+  "11" : "November",
+  "12" : "December"
+}
 
 // Button to Submit Temperatures
 document.getElementById("submit").addEventListener("click", async () => {
   await connectMetamask();
+
   blockchain_content = "User Wallet Address is " + account + "\n\n.";
+
   breached_temperatures = [];
   // Submit the threshold temperature and the rounded temperatures to the smart contract
   const threshold = Number(document.getElementById("threshold").value); 
+
   blockchain_content += `In ${month}/${year}, the dates and times on which the temperature exceeded ${threshold}° celsius are:\n\n.`
+
   //breached_temperatures holds the indices.
   temperatures.forEach(element => {
     if(element > threshold){
@@ -18,7 +39,6 @@ document.getElementById("submit").addEventListener("click", async () => {
   });
 
   if(breached_temperatures.length === 0){
-    blockchain_content += "No dates found\n";
     createTable(table_empty = true);
   }
   else{
@@ -30,29 +50,26 @@ document.getElementById("submit").addEventListener("click", async () => {
 function displayBreachedTemperatures() {
   breachedData = [];
   for (let i = 0; i < breached_temperatures.length; i++) {
-    const date = dates[breached_temperatures[i]];
-    const time = times[breached_temperatures[i]];
-    const temperature = temperatures[breached_temperatures[i]];
-    blockchain_content += `${date} at ${time} with a temperature of ${temperature}° Celsius\n. `;
+    let date = dates[breached_temperatures[i]];
+    let time = times[breached_temperatures[i]];
+    let temperature = temperatures[breached_temperatures[i]];
     breachedData.push({ date, time, temperature });
+    breachedDataDates.push(String(date));
+    breachedDataTimes.push(String(time));
+    breachedDataTemperatures.push(String(temperature));
   }
 }
 
 const createTable = async(table_empty) => {
   
-  await addData(blockchain_content);
+  await addData(month_conversion[month], breachedDataDates, breachedDataTimes, breachedDataTemperatures, String(account));
+
   const tableContainer = document.getElementById('table-container');
   
   while (tableContainer.firstChild) {
       tableContainer.removeChild(tableContainer.firstChild);
   }
 
-  const link = document.createElement("a");
-  link.href = "https://mumbai.polygonscan.com/address/" + contract_address + "#readContract";
-  link.target = "_blank";
-  link.textContent = "Read Blockchain Contents here";
-  tableContainer.appendChild(link);
-  
   if(table_empty){
     const h2 = document.createElement('h2');
     h2.textContent = 'No dates found';
@@ -62,6 +79,14 @@ const createTable = async(table_empty) => {
     const h2 = document.createElement('h2');
     h2.textContent = 'Dates on which temperature exceeded the threshold';
     tableContainer.appendChild(h2)
+
+    const link = document.createElement("a");
+    link.href = "https://mumbai.polygonscan.com/address/" + contract_address + "#readContract";
+    link.target = "_blank";
+    link.textContent = "Read Blockchain Contents here";
+    tableContainer.appendChild(link);
+    
+
     const table = document.createElement('table');
     const headerRow = document.createElement('tr');
     const headers = ['Date', 'Time', 'Temperature'];
