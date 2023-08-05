@@ -1,36 +1,56 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
 
-contract TemperatureThresholdContract {
-    uint8[] public temperatureData;
-    uint8 public thresholdTemperature;
-
-    function addData(uint8[] calldata temperatures, uint8 newThresholdTemperature) external {
-        delete temperatureData;
-        for (uint8 i = 0; i < temperatures.length; i++) {
-            temperatureData.push(temperatures[i]);
-        }
-        thresholdTemperature = newThresholdTemperature;
+contract ThresholdTemperatures {
+    struct TemperatureDetail {
+        string userAddress;
+        string date;
+        string time;
+        string temperature;
     }
 
-    function getTemperaturesAboveThreshold() external view returns (uint8[] memory) {
-        uint8 count = 0;
-        // Count the number of elements that meet the condition (temperature > thresholdTemperature)
-        for (uint8 i = 0; i < temperatureData.length; i++) {
-            if (temperatureData[i] > thresholdTemperature) {
-                count++;
-            }
+    mapping(string => uint256) public monthlyReport;
+
+    TemperatureDetail[] public tempDetails;
+
+    constructor() {
+        monthlyReport["January"] = 0;
+        monthlyReport["February"] = 0;
+        monthlyReport["March"] = 0;
+        monthlyReport["April"] = 0;
+        monthlyReport["May"] = 0;
+        monthlyReport["June"] = 0;
+        monthlyReport["July"] = 0;
+        monthlyReport["August"] = 0;
+        monthlyReport["September"] = 0;
+        monthlyReport["October"] = 0;
+        monthlyReport["November"] = 0;
+        monthlyReport["December"] = 0;
+    }
+
+
+    function getTemperatureDetailsCount() external view returns (uint256) {
+        return tempDetails.length;
+    }
+
+    function addTemperatureDetails(
+        string calldata month,
+        string[] calldata dates,
+        string[] calldata times,
+        string[] calldata temperatures,
+        string calldata userAddress
+    ) external {
+        require(
+            dates.length == times.length && dates.length == temperatures.length,
+            "Invalid input lengths"
+        );
+
+        for (uint256 i = 0; i < dates.length; i++) {
+            tempDetails.push(
+                TemperatureDetail(userAddress, dates[i], times[i], temperatures[i])
+            );
         }
 
-        uint8[] memory aboveThresholdIndices = new uint8[](count);
-
-        uint8 index = 0;
-        for (uint8 i = 0; i < temperatureData.length; i++) {
-            if (temperatureData[i] > thresholdTemperature) {
-                aboveThresholdIndices[index] = i;
-                index++;
-            }
-        }
-        return aboveThresholdIndices;
+        monthlyReport[month] += dates.length;
     }
 }

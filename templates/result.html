@@ -28,21 +28,32 @@
     </div>
 
     <div class="split right">
-        <!-- Connect to account -->
-        <div id="connect-account">
-            <h2>Connect your MetaMask account</h2>
-            <p id="split-p">Kindly ensure you have a MetaMask account. After that, click the button to connect</p>
-            <button type="submit" id="connect">Connect</button>
-            <p id="account" style="text-align:left"></p>
+        <!-- User Instruction -->
+        <div>
+            <h2>User Guide</h2>
+            <p id="split-p">The application operates by activating a smart contract whenever the temperature surpasses the designated threshold. 
+                Within the smart contract, comprehensive records are stored, encompassing the dates and times on which the temperature exceeded the specified limit. 
+                Additionally, the application generates a comprehensive report, outlining the frequency with which the temperature exceeded the threshold. 
+                Kindly ensure you have a Metamask Account before proceeding.</p>
+            <ol>
+                <li>Enter a threshold temperature to trigger a smart contract.</li>
+                <li>On clicking Submit, you will be prompted to perform the following: </li>
+                <ol type="i">
+                    <li>Login to your Metamask Account</li>
+                    <li>Confirm and accept the transaction to trigger the Smart Contract.</li>
+                </ol>
+            </ol>
         </div>
+    
         <!-- Choose Threshold -->
-        <div id="enter-threshold" style="display: none;">
+        <div id="enter-threshold">
             <h2>Choose a Threshold temperature</h2>
             <p id="split-p">On clicking Submit, a Smart Contract will be triggered displaying all the dates and the time at which the
                 temperature exceeded the threshold.
             </p>
             <input type="number" name="threshold" id="threshold" placeholder="Enter a value: ">
             <button type="submit" id="submit">Submit</button>
+            <p id="account" style="text-align:left"></p>
         </div>
         <!-- Breached Temperatures -->
         <div id="table-container">
