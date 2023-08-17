@@ -22,4 +22,6 @@ The following application is deployed over [Mumbai Testnet](https://mumbai.polyg
 3. Enter your Wallet Address and click Submit.
 4. Follow the instructions. After a few moments, the tokens will be transferred to your account.
 
+View application at [website](http://3.90.249.133/). Download the sample dataset [here](https://github.com/Dhruv16S/Temperature-Threshold-Alert-Using-Blockchain/blob/main/Data%20Cleaning/filtered_data_balta_sound.csv). When prompted, upload the downloaded dataset and choose the duration as June, 2023.
+
 For further details, refer the Project Documentation
