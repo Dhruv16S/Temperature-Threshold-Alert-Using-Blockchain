@@ -3,6 +3,7 @@ var breachedDataTimes = [];
 var breachedDataTemperatures = [];
 var breached_temperatures = [];
 var blockchain_content;
+var threshold = 0;
 
 month_conversion = {
   "01" : "January",
@@ -27,7 +28,7 @@ document.getElementById("submit").addEventListener("click", async () => {
 
   breached_temperatures = [];
   // Submit the threshold temperature and the rounded temperatures to the smart contract
-  const threshold = Number(document.getElementById("threshold").value); 
+  threshold = Number(document.getElementById("threshold").value); 
 
   blockchain_content += `In ${month}/${year}, the dates and times on which the temperature exceeded ${threshold}° celsius are:\n\n.`
 
@@ -68,7 +69,7 @@ const createTable = async(table_empty) => {
   try {
     await addData(month_conversion[month], breachedDataDates, breachedDataTimes, breachedDataTemperatures, String(account));
     const recordCount = await getRecordCount();
-    const recordOccurences = await getAllMonthlyOccurrences();
+    const recentRecordCount = await getRecentRecordCount();
 
     loadingSpinner.style.display = 'none';
 
@@ -85,10 +86,9 @@ const createTable = async(table_empty) => {
     }
 
     else{
-
-      const numberRecords = document.createElement('h2');
-      numberRecords.textContent = 'Total number of records in the blockchain network: ' + Number(recordCount);
-      tableContainer.appendChild(numberRecords)
+      const recentNumberRecords = document.createElement('h3');
+      recentNumberRecords.textContent = `In ${month}/${year}, the total days on which the temperature exceeded ${threshold}° celsius are: ${breachedData.length}`;
+      tableContainer.appendChild(recentNumberRecords)
 
       // Read Blockchain
       const link = document.createElement("a");
@@ -97,40 +97,8 @@ const createTable = async(table_empty) => {
       link.textContent = "Read Blockchain Contents here";
       tableContainer.appendChild(link);
 
-      // Monthly Occurences
-      const monthlyOccurences = document.createElement('h2');
-      monthlyOccurences.textContent = 'Monthly Occurences of temperature exceeding threshold';
-      tableContainer.appendChild(monthlyOccurences)
-
-      const monthlyTable = document.createElement('table');
-      const monthlyHeaderRow = document.createElement('tr');
-      const monthlyHeaders = ["Month", "Occurences"];
-      monthlyHeaders.forEach(headerText => {
-          const thTemp = document.createElement('th');
-          thTemp.textContent = headerText;
-          monthlyHeaderRow.appendChild(thTemp);
-      });
-      monthlyTable.appendChild(monthlyHeaderRow);
-
-
-      for (let i=0; i < recordOccurences.length; i++) {
-        const row = document.createElement('tr');
-
-        const monthCell = document.createElement('td');
-        monthCell.textContent = recordOccurences[i][0];
-        row.appendChild(monthCell);
-
-        const occurencesCell = document.createElement('td');
-        occurencesCell.textContent = Number(recordOccurences[i][1]);
-        row.appendChild(occurencesCell);
-
-        monthlyTable.appendChild(row);
-      }
-
-      tableContainer.appendChild(monthlyTable);
-
       // Create Table of current breaches
-      const h2 = document.createElement('h2');
+      const h2 = document.createElement('h3');
       h2.textContent = 'Dates on which temperature exceeded the threshold';
       tableContainer.appendChild(h2)
       
@@ -144,7 +112,9 @@ const createTable = async(table_empty) => {
       });
       table.appendChild(headerRow);
 
-      for (const index in breachedData) {
+      var recentDetails = await getRecentTemperatureDetails();
+
+      for (let index = 0; index < breachedData.length; index++) {
           const data = breachedData[index];
           const row = document.createElement('tr');
 
@@ -160,10 +130,9 @@ const createTable = async(table_empty) => {
           temperatureCell.textContent = data.temperature;
           row.appendChild(temperatureCell);
 
-          table.appendChild(row);
-      }
-      
-      tableContainer.appendChild(table);
+          table.appendChild(row);  
+    }
+    tableContainer.appendChild(table);
   }   
   } catch (error) {
       loadingSpinner.style.display = 'none';

@@ -30,7 +30,7 @@ img{
 }
 
 .split {
-    height: 100%;
+    height: auto;
     width: 50%;
     position: fixed;
     z-index: 1;
@@ -44,6 +44,8 @@ img{
 }
   
 .right {
+    position: absolute;
+    top: 0;
     right: 0;
     padding:25px;
 }

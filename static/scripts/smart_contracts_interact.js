@@ -15,6 +15,19 @@ const getRecordCount = async () => {
     }
 };
 
+const getRecentTemperatureDetails = async () => {
+    if(contract){
+        return await contract.methods.getRecentTemperatureDetails().call();
+    }
+};
+
+const getRecentRecordCount = async () => {
+    if(contract){
+        var recentCount = await contract.methods.getRecentTemperatureDetailsCount().call();
+        return recentCount
+    }
+};
+
 
 const getAllMonthlyOccurrences = async () => {
     if(contract){

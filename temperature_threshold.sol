@@ -9,6 +9,12 @@ contract ThresholdTemperatures {
         string temperature;
     }
 
+    struct RecentTemperatureDetail {
+        string date;
+        string time;
+        string temperature;
+    }
+
     struct MonthlyOccurrence {
         string month;
         uint256 occurrences;
@@ -17,6 +23,7 @@ contract ThresholdTemperatures {
     mapping(string => uint256) public monthlyReport;
 
     TemperatureDetail[] public tempDetails;
+    RecentTemperatureDetail[] public recentTempDetails;
 
     constructor() {
         monthlyReport["January"] = 0;
@@ -37,6 +44,10 @@ contract ThresholdTemperatures {
         return tempDetails.length;
     }
 
+    function getRecentTemperatureDetailsCount() external view returns (uint256) {
+        return recentTempDetails.length;
+    }
+
     function addTemperatureDetails(
         string calldata month,
         string[] calldata dates,
@@ -48,6 +59,14 @@ contract ThresholdTemperatures {
             dates.length == times.length && dates.length == temperatures.length,
             "Invalid input lengths"
         );
+
+        delete recentTempDetails;
+
+        for (uint256 i = 0; i < dates.length; i++) {
+            recentTempDetails.push(
+                RecentTemperatureDetail(dates[i], times[i], temperatures[i])
+            );
+        }
 
         for (uint256 i = 0; i < dates.length; i++) {
             tempDetails.push(
@@ -77,5 +96,9 @@ contract ThresholdTemperatures {
 
     function getTemperatureDetails() external view returns (TemperatureDetail[] memory) {
         return tempDetails;
+    }
+
+    function getRecentTemperatureDetails() external view returns (RecentTemperatureDetail[] memory) {
+        return recentTempDetails;
     }
 }
